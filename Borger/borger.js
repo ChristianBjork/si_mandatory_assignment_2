@@ -8,7 +8,7 @@ let db = new sqlite3.Database(db_file, (err) => {
     if(err){
         console.log('Failed Connection: ' + err.message);
     } else {
-        console.log('Connection to nemID database succesfull.');
+        console.log('Connection to ' + db_file + ' database succesfull.');
     }
 });
 var app = express();
@@ -17,16 +17,16 @@ app.use(express.json());
 
 
 
-app.get('/test', (req, res) => {
-    res.status(200).send({ message: "Server is running just fine on port 8080... " })
+app.get('/api/borger/test', (req, res) => {
+    res.status(200).send({ message: "Server is running just fine on port 5004... " })
 });
 
 
-app.listen(8080, (err) => {
+app.listen(5004, (err) => {
     if (err) {
         console.log(err);
     }
     else {
-        console.log("Listening on port 8080");
+        console.log("Listening on port 5004");
     }
 });
