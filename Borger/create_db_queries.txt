@@ -1,7 +1,7 @@
 let borger_user_query = `CREATE TABLE IF NOT EXISTS borger_user (
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
    	UserId INTEGER NOT NULL,
-	CreatedAt DateTime NOT NULL
+	CreatedAt DATETIME NOT NULL
 )`;
 
 db.run(borger_user_query, (err) => {

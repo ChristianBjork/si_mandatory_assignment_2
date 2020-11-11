@@ -1,0 +1,60 @@
+let bank_user_query = `CREATE TABLE IF NOT EXISTS bank_user (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+   	UserId INTEGER NOT NULL,
+    CreatedAt DATETIME NOT NULL,
+    ModifiedAt DATETIME NOT NULL
+)`;
+
+db.run(bank_user_query, (err) => {
+    if (err) {
+        console.log(err);
+    }
+});
+
+let deposit_query = `CREATE TABLE IF NOT EXISTS deposit (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    BankUserId INTEGER NOT NULL,
+	CreatedAt DATETIME NOT NULL,
+	Amount DECIMAL(2) NOT NULL,
+	FOREIGN KEY (BankUserId) REFERENCES bank_user(Id)
+)`;
+    
+db.run(deposit_query, (err) => {
+    if (err) {
+        console.log(err);
+    }
+});
+
+let loan_query = `CREATE TABLE IF NOT EXISTS loan (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserId INTEGER NOT NULL,
+    CreatedAt DATETIME NOT NULL,
+    ModefiedAt DATETIME NOT NULL,
+    Amount DECIMAL(2) NOT NULL
+)`;
+    
+db.run(loan_query, (err) => {
+    if (err) {
+        console.log(err);
+    }
+});
+
+let account_query = `CREATE TABLE IF NOT EXISTS account (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    BankUserId INTEGER NOT NULL,
+    AccountNo INTEGER NOT NULL,
+    IsStudent BIT NOT NULL,
+    CreatedAt DATETIME NOT NULL,
+    ModefiedAt DATETIME NOT NULL,
+    InterestRate DECIMAL(2) NOT NULL,
+    Amount DECIMAL(2) NOT NULL,
+	FOREIGN KEY (BankUserId) REFERENCES bank_user(Id)
+)`;
+    
+db.run(account_query, (err) => {
+    if (err) {
+        console.log(err);
+    }
+});
+
+db.close();

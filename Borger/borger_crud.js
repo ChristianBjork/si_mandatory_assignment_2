@@ -2,7 +2,9 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const axios = require('axios');
 
-let db = new sqlite3.Database('borger_db.sqlite', (err) => {
+let db_file = 'borger_db.sqlite'; 
+
+let db = new sqlite3.Database(db_file, (err) => {
     if(err){
         console.log('Failed Connection: ' + err.message);
     } else {
