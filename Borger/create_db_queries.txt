@@ -1,0 +1,26 @@
+let borger_user_query = `CREATE TABLE IF NOT EXISTS borger_user (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+   	UserId INTEGER NOT NULL,
+	CreatedAt DateTime NOT NULL
+)`;
+
+db.run(borger_user_query, (err) => {
+    if (err) {
+        console.log(err);
+    }
+});
+
+let address_query = `CREATE TABLE IF NOT EXISTS address (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+   	BorgerUserId INTEGER NOT NULL,
+	CreatedAt DATETIME NOT NULL,
+	IsValid BIT NOT NULL,
+	FOREIGN KEY (BorgerUserId) REFERENCES borger_user(Id)
+)`;
+
+db.run(address_query, (err) => {
+    if (err) {
+        console.log(err);
+    }
+});
+db.close();
