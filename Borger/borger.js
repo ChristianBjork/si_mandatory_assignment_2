@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-import borgerRoutes from '../Borger/routes/routes.js';
+import borgerRoutes from './routes/routes.js'
 
 var app = express();
 
