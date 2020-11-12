@@ -1,25 +1,18 @@
-const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
-const axios = require('axios');
+import express from 'express';
+import sqlite3 form 'sqlite3'
+import axios  'axios';
+import cors from 'cors';
 
-let db_file = 'borger_db.sqlite'; 
+const borgerRoutes from './routes/borger.js'
 
-let db = new sqlite3.Database(db_file, (err) => {
-    if(err){
-        console.log('Failed Connection: ' + err.message);
-    } else {
-        console.log('Connection to ' + db_file + ' database succesfull.');
-    }
-});
 var app = express();
 
 app.use(express.json());
+app.use(cors())
+app.use('/borger',)
 
 
 
-app.get('/api/borger/test', (req, res) => {
-    res.status(200).send({ message: "Server is running just fine on port 5004... " })
-});
 
 
 app.listen(5004, (err) => {
