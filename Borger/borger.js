@@ -1,18 +1,13 @@
 import express from 'express';
-import sqlite3 form 'sqlite3'
-import axios  'axios';
 import cors from 'cors';
 
-const borgerRoutes from './routes/borger.js'
+import borgerRoutes from '../Borger/routes/routes.js';
 
 var app = express();
 
 app.use(express.json());
-app.use(cors())
-app.use('/borger',)
-
-
-
+app.use(cors());
+app.use('/api/borger', borgerRoutes);
 
 
 app.listen(5004, (err) => {
