@@ -1,15 +1,15 @@
 import express from 'express';
-import sqlite3 form 'sqlite3'
-import axios  'axios';
+import sqlite3 from 'sqlite3'
+import axios from  'axios';
 import cors from 'cors';
 
-const borgerRoutes from './routes/borger.js'
+import borgerRoutes from './routes/routes.js'
 
 var app = express();
 
 app.use(express.json());
 app.use(cors())
-app.use('/borger',)
+app.use('/borger',borgerRoutes)
 
 
 

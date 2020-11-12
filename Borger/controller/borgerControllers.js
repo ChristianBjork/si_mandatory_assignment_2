@@ -12,5 +12,7 @@ let db = new sqlite3.Database(db_file, (err) => {
 });
 
 export const getAllBorger = async (req,res) => {
-    const query = 'SELECT * from borger_user;
+    const query = 'SELECT * from borger_user';
+
 }
+
