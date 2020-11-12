@@ -32,5 +32,12 @@ export const createBorger = async (req, res) => {
 }
 
 export const getAllBorger = async (req,res) => {
+<<<<<<< HEAD
     const query = 'SELECT * from borger_user'; 
 }
+=======
+    const query = 'SELECT * from borger_user';
+
+}
+
+>>>>>>> ab63a6df5ed7c4adaeb21ebef7d8b6a3ad7ff04d
