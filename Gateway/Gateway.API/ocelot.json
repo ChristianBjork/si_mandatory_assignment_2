@@ -1,7 +1,7 @@
 {    
     "Routes": [    
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{everything}",    
+        "DownstreamPathTemplate": "/api/borger/test",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
@@ -9,7 +9,7 @@
            "Port": "5004"    
           }     
         ],    
-        "UpstreamPathTemplate": "/api/borger/{controller}/{everything}",    
+        "UpstreamPathTemplate": "/borger/test",    
         "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
       },
       {    
