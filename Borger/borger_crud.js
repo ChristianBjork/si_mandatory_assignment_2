@@ -18,15 +18,15 @@ app.use(express.json());
 
 
 app.get('/test', (req, res) => {
-    res.status(200).send({ message: "Server is running just fine on port 8080... " })
+    res.status(200).send({ message: "Server is running just fine on port 5004... " })
 });
 
 
-app.listen(8080, (err) => {
+app.listen(5004, (err) => {
     if (err) {
         console.log(err);
     }
     else {
-        console.log("Listening on port 8080");
+        console.log("Listening on port 5004");
     }
 });
