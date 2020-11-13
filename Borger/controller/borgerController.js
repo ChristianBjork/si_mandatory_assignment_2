@@ -17,13 +17,15 @@ export const test = (req, res) => {
 
 
 export const createBorger = async (req, res) => {
-    const create_borger_user = 'INSERT INTO  borger_user (Userid, CreatedAt) VALUES (?, ?)';
-    let userId = req.body.userid;
-    let createdAt = Date.now();
-
+    let userId = req.body.userId;
+    let createdAt = new Date();
+    createdAt = dateBeautifier(createdAt);
+console.log(createdAt);
+    const create_borger_user = 'INSERT INTO borger_user (Userid, CreatedAt) VALUES (?, ?)';
     db.run(create_borger_user, [userId, createdAt], async (err) => {
         if(err) {
             console.log(err);
+            return res.status(500).send({ errors: ['Could not retrieve photo'] });
         } else {
             console.log("Inserted user: " + userId);
             return res.status(200).send({userID: userId})
@@ -33,4 +35,11 @@ export const createBorger = async (req, res) => {
 
 export const getAllBorger = async (req,res) => {
     const query = 'SELECT * from borger_user'; 
+}
+
+
+function dateBeautifier(date){
+    let dateFormatted = [date.getFullYear(), date.getMonth()+1, date.getDate()].join('-')+' '+
+                    [date.getHours(),date.getMinutes(), date.getSeconds()].join(':');
+    return dateFormatted;
 }

@@ -6,7 +6,7 @@ import {
     // updateBorger,
     // deleteBorger 
 } 
-    from '../controller/borgerControllers.js';
+    from '../controller/borgerController.js';
 
 const router = express.Router();
 
