@@ -24,3 +24,4 @@ db.run(address_query, (err) => {
     }
 });
 db.close();
+

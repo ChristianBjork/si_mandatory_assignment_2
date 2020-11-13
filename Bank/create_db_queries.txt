@@ -58,3 +58,7 @@ db.run(account_query, (err) => {
 });
 
 db.close();
+
+query = 'INSERT INTO account (BankUserId,AccountNo,IsStudent,CreatedAt,ModefiedAt,InterestRate,Amount) VALUES (3,3,true,2020-11-13,2020-11-13,2,5400)'
+"INSERT INTO deposit(BankUserId,CreatedAt,Amount) VALUES (3,'2020-11-13',2000)"
+const query ="INSERT INTO loan(UserId,CreatedAt,ModefiedAt,Amount) VALUES (2,'2020-11-13','2020-11-13',45000)"
