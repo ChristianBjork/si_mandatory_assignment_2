@@ -2,7 +2,8 @@ import express from 'express'
 
 import { 
     test,
-    createBorger 
+    createBorger,
+    readBorger 
     // updateBorger,
     // deleteBorger 
 } 
@@ -11,8 +12,9 @@ import {
 const router = express.Router();
 
 // router.get('/',getBorger);
-router.post('/createBorger', createBorger);
 router.get('/test', test);
+router.post('/createBorger', createBorger);
+router.get('/readBorger', readBorger);
 // router.patch('/:id', updateBorger);
 // router.delete('/:id', deleteBorger);
 export default router;
