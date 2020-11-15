@@ -2,15 +2,6 @@ import express  from'express';
 import sqlite3  from 'sqlite3'
 import bankRoutes from '../Bank/routes/routes.js'
 
-let db_file = 'bank_db.sqlite'; 
-
-let db = new sqlite3.Database(db_file, (err) => {
-    if(err){
-        console.log('Failed Connection: ' + err.message);
-    } else {
-        console.log('Connection to ' + db_file + ' database succesfull.');
-    }
-});
 
 var app = express();
 
