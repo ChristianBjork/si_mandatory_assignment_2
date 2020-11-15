@@ -1,3 +1,4 @@
+import { query } from 'express';
 import  sqlite3 from 'sqlite3';
 
 let db_file = 'bank_db.sqlite'; 
@@ -12,22 +13,10 @@ let db = new sqlite3.Database(db_file, (err) => {
 
 export const postBankUser = async (req,res) => {
     let bankUserId = req.body.UserId
-    const query = `INSERT INTO bank_user(UserId) VALUES(?)`
-
-    db.run(query, [bankUserId], (error) => {
-        if (error){
-            res.status(400).json({message: 'the user could not get crated, no rows affcted',
-            error : error.message})
-            console.log(error)
-        }
-        else{
-            console.log('new values were added to the database ')
-            res.status(201).json({message:'Rows were succesfully altered '})
-        }
-    })
+    const query = `INSERT INTO bank_user(BankUserId) VALUES(?)`
 }
 
 export const testBankApi = async (req,res) => {
-    res.send('hello world')
     console.log('youve been hit BAM! ')
+    res.send('hello world')
 }
