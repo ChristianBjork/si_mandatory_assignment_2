@@ -85,28 +85,28 @@
         "UpstreamHttpMethod": [ "GET" ]
       },
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{identifier}",    
+        "DownstreamPathTemplate": "/api/borger/updateAddress/{id}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
            "Host": "localhost",    
-           "Port": "5006"    
+           "Port": "5004"    
           }     
         ],    
-        "UpstreamPathTemplate": "/api/skat/{controller}/{identifier}",    
-        "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
+        "UpstreamPathTemplate": "/borger/updateAddress/{id}",    
+        "UpstreamHttpMethod": [ "PATCH" ]
       },
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{identifier}/{everything}",    
+        "DownstreamPathTemplate": "/api/borger/deleteAddress/{id}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
            "Host": "localhost",    
-           "Port": "5006"    
+           "Port": "5004"    
           }     
         ],    
-        "UpstreamPathTemplate": "/api/skat/{controller}/{identifier}/{everything}",    
-        "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
+        "UpstreamPathTemplate": "/borger/deleteAddress/{id}",    
+        "UpstreamHttpMethod": [ "DELETE" ]
       },
       {
         "DownstreamPathTemplate": "/todos",
