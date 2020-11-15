@@ -42,47 +42,47 @@
         "DownstreamHostandPorts": [    
          {    
            "Host": "localhost",    
-           "Port": "5005"    
+           "Port": "5004"    
           }     
         ],    
         "UpstreamPathTemplate": "/borger/updateBorger/{Id}",    
-        "UpstreamHttpMethod": [ "PUT" ]
+        "UpstreamHttpMethod": [ "PATCH" ]
       },
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{identifier}",    
+        "DownstreamPathTemplate": "/api/borger/deleteBorger/{Id}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
            "Host": "localhost",    
-           "Port": "5005"    
+           "Port": "5004"    
           }     
         ],    
-        "UpstreamPathTemplate": "/api/bank/{controller}/{identifier}",    
-        "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
+        "UpstreamPathTemplate": "/borger/deleteBorger/{Id}",    
+        "UpstreamHttpMethod": [ "DELETE" ]
       },
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{identifier}/{everything}",    
+        "DownstreamPathTemplate": "/api/borger/createAddress",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
            "Host": "localhost",    
-           "Port": "5005"    
+           "Port": "5004"    
           }     
         ],    
-        "UpstreamPathTemplate": "/api/bank/{controller}/{identifier}/{everything}",    
-        "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
+        "UpstreamPathTemplate": "/borger/createAddress",    
+        "UpstreamHttpMethod": [ "POST" ]
       },
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{everything}",    
+        "DownstreamPathTemplate": "/api/borger/readAddress",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
            "Host": "localhost",    
-           "Port": "5006"    
+           "Port": "5004"    
           }     
         ],    
-        "UpstreamPathTemplate": "/api/skat/{controller}/{everything}",    
-        "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
+        "UpstreamPathTemplate": "/borger/readAddress",    
+        "UpstreamHttpMethod": [ "GET" ]
       },
       {    
         "DownstreamPathTemplate": "/api/{controller}/{identifier}",    

@@ -2,8 +2,8 @@
 import sqlite3 from 'sqlite3';
 
 //Setup db connection
-let db_file = 'borger_db.sqlite'; 
-let db = new sqlite3.Database(db_file, (err) => {
+const db_file = 'borger_db.sqlite'; 
+const db = new sqlite3.Database(db_file, (err) => {
     if(err){
         console.log('Failed Connection: ' + err.message);
     } else {
@@ -11,17 +11,20 @@ let db = new sqlite3.Database(db_file, (err) => {
     }
 });
 
+//Enable Constraints
+db.get("PRAGMA foreign_keys = ON");
+
 export const test = (req, res) => {
     res.status(200).send({ message: "Server is running just fine on port 8088... " })
 }
 
 //Create borger
 export const createBorger = async (req, res) => {
-    let userId = req.body.userId;
+    const userId = req.body.userId;
     let createdAt = new Date();
     createdAt = dateBeautifier(createdAt);
 console.log(createdAt);
-    const create_query = 'INSERT INTO borger_user (Userid, CreatedAt) VALUES (?, ?)';
+    const create_query = 'INSERT INTO borger_user (UserId, CreatedAt) VALUES (?, ?)';
     db.run(create_query, [userId, createdAt], async (err) => {
         if(err) {
             return res.status(500).send({ errors: ['SQL-Error:' + err] });
@@ -34,7 +37,7 @@ console.log(createdAt);
 
 //Read Borger
 export const readBorger = async (req, res) => {
-    let id = req.body.id;
+    const id = req.body.id;
 console.log(id);
     const read_query = 'SELECT * FROM borger_user WHERE Id=?';
     db.get(read_query, [id], async (err, rows) => {
@@ -43,31 +46,106 @@ console.log(id);
         } else if (rows !== undefined){
             return res.status(200).send({borgerId: rows.Id, userId: rows.UserId, createdAt: rows.CreatedAt});
         } else {
-            return res.status(400).send({BadRequest: "No borger found"});
+            return res.status(400).send({BadRequest: "Borger not found"});
         }
     });
 }
 
 //Update Borger
 export const updateBorger = async (req, res) => {
-    let id = req.params.id;
+    const id = req.params.id;
 
-    let newUserId = req.body.userId;
-    let newCreatedAt = new Date();
+    const newUserId = req.body.userId;
+    const newCreatedAt = new Date();
     newCreatedAt = dateBeautifier(newCreatedAt);
 
     const update_query = 'UPDATE borger_user SET UserId = ?, CreatedAt = ? WHERE Id = ?';
-    db.run(update_query, [newUserId, newCreatedAt, id], async(err) => {
+    db.run(update_query, [newUserId, newCreatedAt, id], async function(err) {
         if(err) {
             return res.status(500).send({ errors: ["SQL-Error: ${err}"] });
+        } else if (this.changes >= 1) {
+            return res.status(200).send({ msg: `Row(s) updated: ${this.changes}`});
         } else {
-            console.log(rows);
-            return res.status(200).send({ msg: "Rows(s) updated: ${this.changes}"});
+            return res.status(400).send({BadRequest: `Borger not found, rows updated: ${this.changes}`});
         }
-        console.log('WAS HERE!!!')
     });
-
 }
+
+//Delete Borger
+export const deleteBorger = async (req, res) => {
+    const id = req.params.id;
+    const delete_query = 'DELETE FROM borger_user WHERE Id = ?';
+    db.run(delete_query, [id], async function(err) {
+        if (err) {
+            return res.status(500).send({ errors: ["SQL-Error: ${err}"] });
+        } else if (this.changes >= 1) {
+            return res.status(200).send({ msg: `Row(s) affected: ${this.changes}`});
+        } else {
+            return res.status(400).send({BadRequest: `Borger not found, rows affected: ${this.changes}`});
+        }
+    });
+}
+
+//Create Address
+export const createAddress = async (req, res) => {
+    const address = req.body.address;
+    const borgerUserId = req.body.borgerUserId;
+    let createdAt = new Date();
+    createdAt = dateBeautifier(createdAt);
+    let isValid = req.body.isValid;
+console.log(createdAt);
+    const create_query = 'INSERT INTO address (BorgerUserId, Address, CreatedAt, IsValid) VALUES (?, ?, ?, ?)';
+    db.run(create_query, [borgerUserId, address, createdAt, isValid], async function(err) {
+        if(err) {
+            return res.status(500).send({ errors: ['SQL-Error:' + err] });
+        } else if (this.changes >= 1) {
+            console.log("Inserted address: " + address);
+            return res.status(200).send({address: address});
+        } else {
+            return res.status(400).send({BadRequest: "User with entered id, doesn't exist"});
+        }
+    });
+}
+
+//Read Address
+export const readAddress = async (req, res) => {
+    const id = req.body.id;
+console.log(id);
+    const read_query = 'SELECT * FROM address WHERE Id=?';
+    db.get(read_query, [id], async (err, rows) => {
+        if(err) {
+            return res.status(500).send({ errors: ['SQL-Error:' + err] });
+        } else if (rows !== undefined){
+            console.log(rows.IsValid);
+            let isActive = (rows.IsValid == "1" ? true : false);
+            return res.status(200).send({Address: rows.Address, borgerUserId: rows.BorgerUserId, createdAt: rows.CreatedAt, active: isActive});
+        } else {
+            return res.status(400).send({BadRequest: "Borger not found"});
+        }
+    });
+}
+
+//Update Borger
+export const updateBorger = async (req, res) => {
+    const id = req.params.id;
+
+    const newUserId = req.body.userId;
+    const newCreatedAt = new Date();
+    newCreatedAt = dateBeautifier(newCreatedAt);
+
+    const update_query = 'UPDATE borger_user SET UserId = ?, CreatedAt = ? WHERE Id = ?';
+    db.run(update_query, [newUserId, newCreatedAt, id], async function(err) {
+        if(err) {
+            return res.status(500).send({ errors: ["SQL-Error: ${err}"] });
+        } else if (this.changes >= 1) {
+            return res.status(200).send({ msg: `Row(s) updated: ${this.changes}`});
+        } else {
+            return res.status(400).send({BadRequest: `Borger not found, rows updated: ${this.changes}`});
+        }
+    });
+}
+
+
 
 function dateBeautifier(date){
     let dateFormatted = [date.getFullYear(), date.getMonth()+1, date.getDate()].join('-')+' '+

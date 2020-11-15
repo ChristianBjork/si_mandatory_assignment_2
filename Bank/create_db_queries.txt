@@ -16,7 +16,7 @@ let deposit_query = `CREATE TABLE IF NOT EXISTS deposit (
     BankUserId INTEGER NOT NULL,
 	CreatedAt DATETIME NOT NULL,
 	Amount DECIMAL(2) NOT NULL,
-	FOREIGN KEY (BankUserId) REFERENCES bank_user(Id)
+	FOREIGN KEY (BankUserId) REFERENCES bank_user(Id) ON DELETE CASCADE
 )`;
     
 db.run(deposit_query, (err) => {
@@ -27,10 +27,11 @@ db.run(deposit_query, (err) => {
 
 let loan_query = `CREATE TABLE IF NOT EXISTS loan (
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    UserId INTEGER NOT NULL,
+    BankUserId INTEGER NOT NULL,
     CreatedAt DATETIME NOT NULL,
     ModefiedAt DATETIME NOT NULL,
-    Amount DECIMAL(2) NOT NULL
+    Amount DECIMAL(2) NOT NULL,
+    FOREIGN KEY (BankUserId) REFERENCES bank_user(Id) ON DELETE CASCADE
 )`;
     
 db.run(loan_query, (err) => {
@@ -45,10 +46,10 @@ let account_query = `CREATE TABLE IF NOT EXISTS account (
     AccountNo INTEGER NOT NULL,
     IsStudent BIT NOT NULL,
     CreatedAt DATETIME NOT NULL,
-    ModefiedAt DATETIME NOT NULL,
+    ModefiedAt DATETIME,
     InterestRate DECIMAL(2) NOT NULL,
     Amount DECIMAL(2) NOT NULL,
-	FOREIGN KEY (BankUserId) REFERENCES bank_user(Id)
+	FOREIGN KEY (BankUserId) REFERENCES bank_user(Id) ON DELETE CASCADE
 )`;
     
 db.run(account_query, (err) => {
