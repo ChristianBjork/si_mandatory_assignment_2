@@ -37,7 +37,7 @@
         "UpstreamHttpMethod": [ "GET"]
       },
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{everything}",    
+        "DownstreamPathTemplate": "/api/borger/updateBorger/{Id}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
@@ -45,8 +45,8 @@
            "Port": "5005"    
           }     
         ],    
-        "UpstreamPathTemplate": "/api/bank/{controller}/{everything}",    
-        "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
+        "UpstreamPathTemplate": "/borger/updateBorger/{Id}",    
+        "UpstreamHttpMethod": [ "PUT" ]
       },
       {    
         "DownstreamPathTemplate": "/api/{controller}/{identifier}",    
