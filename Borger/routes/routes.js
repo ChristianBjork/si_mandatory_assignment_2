@@ -7,9 +7,9 @@ import {
     updateBorger,
     deleteBorger,
     createAddress,
-    readAddress
+    readAddress,
     // updateAddres,
-    // deleteAddress 
+     deleteAddress 
 } 
     from '../controller/borgerController.js';
 
@@ -24,5 +24,5 @@ router.delete('/deleteBorger/:id', deleteBorger);
 router.post('/createAddress', createAddress);
 router.get('/readAddress', readAddress);
 // router.patch('/updateAddress/:id', updateAddres);
-// router.delete('/deleteAddress/:id', deleteAddress);
+router.delete('/deleteAddress/:id', deleteAddress);
 export default router;

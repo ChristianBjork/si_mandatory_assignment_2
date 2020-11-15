@@ -24,6 +24,7 @@ export const createBorger = async (req, res) => {
     let createdAt = new Date();
     createdAt = dateBeautifier(createdAt);
 console.log(createdAt);
+
     const create_query = 'INSERT INTO borger_user (UserId, CreatedAt) VALUES (?, ?)';
     db.run(create_query, [userId, createdAt], async (err) => {
         if(err) {
@@ -39,6 +40,7 @@ console.log(createdAt);
 export const readBorger = async (req, res) => {
     const id = req.body.id;
 console.log(id);
+
     const read_query = 'SELECT * FROM borger_user WHERE Id=?';
     db.get(read_query, [id], async (err, rows) => {
         if(err) {
@@ -74,6 +76,7 @@ export const updateBorger = async (req, res) => {
 //Delete Borger
 export const deleteBorger = async (req, res) => {
     const id = req.params.id;
+
     const delete_query = 'DELETE FROM borger_user WHERE Id = ?';
     db.run(delete_query, [id], async function(err) {
         if (err) {
@@ -94,6 +97,7 @@ export const createAddress = async (req, res) => {
     createdAt = dateBeautifier(createdAt);
     let isValid = req.body.isValid;
 console.log(createdAt);
+
     const create_query = 'INSERT INTO address (BorgerUserId, Address, CreatedAt, IsValid) VALUES (?, ?, ?, ?)';
     db.run(create_query, [borgerUserId, address, createdAt, isValid], async function(err) {
         if(err) {
@@ -111,6 +115,7 @@ console.log(createdAt);
 export const readAddress = async (req, res) => {
     const id = req.body.id;
 console.log(id);
+
     const read_query = 'SELECT * FROM address WHERE Id=?';
     db.get(read_query, [id], async (err, rows) => {
         if(err) {
@@ -126,21 +131,36 @@ console.log(id);
 }
 
 //Update Borger
-export const updateBorger = async (req, res) => {
+// export const updateAddress = async (req, res) => {
+//     const id = req.params.id;
+
+//     const something = req.body.something;
+//     const newCreatedAt = new Date();
+//     newCreatedAt = dateBeautifier(newCreatedAt);
+
+//     const update_query = 'UPDATE address SET column1 = ?, column2 = ? WHERE Id = ?';
+//     db.run(update_query, [something, newCreatedAt, id], async function(err) {
+//         if(err) {
+//             return res.status(500).send({ errors: ["SQL-Error: ${err}"] });
+//         } else if (this.changes >= 1) {
+//             return res.status(200).send({ msg: `Row(s) updated: ${this.changes}`});
+//         } else {
+//             return res.status(400).send({BadRequest: `Address not found, rows updated: ${this.changes}`});
+//         }
+//     });
+// }
+
+//Delete Address
+export const deleteAddress = async (req, res) => {
     const id = req.params.id;
-
-    const newUserId = req.body.userId;
-    const newCreatedAt = new Date();
-    newCreatedAt = dateBeautifier(newCreatedAt);
-
-    const update_query = 'UPDATE borger_user SET UserId = ?, CreatedAt = ? WHERE Id = ?';
-    db.run(update_query, [newUserId, newCreatedAt, id], async function(err) {
-        if(err) {
+    const delete_query = 'DELETE FROM address WHERE Id = ?';
+    db.run(delete_query, [id], async function(err) {
+        if (err) {
             return res.status(500).send({ errors: ["SQL-Error: ${err}"] });
         } else if (this.changes >= 1) {
-            return res.status(200).send({ msg: `Row(s) updated: ${this.changes}`});
+            return res.status(200).send({ addressDeleted: `Row(s) affected: ${this.changes}`});
         } else {
-            return res.status(400).send({BadRequest: `Borger not found, rows updated: ${this.changes}`});
+            return res.status(400).send({BadRequest: `Address not found, rows affected: ${this.changes}`});
         }
     });
 }
