@@ -23,18 +23,20 @@ let db = new sqlite3.Database(db_file, (err) => {
 db.get("PRAGMA foreign_keys = ON");
 
 export const postAccount = async (req,res) => {
-    const BankUserId = req.body.Id
+    const BankUserId = req.body.BankUserId
     const AccountNo = req.body.AccountNo
     const IsStudent = req.body.IsStudent
     let createdAt = new Date();
     createdAt = dateBeautifier(createdAt);
-    let modifiedAt = new Date();
-    modifiedAt = dateBeautifier(modifiedAt)
+    let modefiedAt = new Date();
+    modefiedAt = dateBeautifier(modefiedAt)
     const InterestRate = req.body.InterestRate
     const Amount = req.body.Amount
+    const checkId = req.body.BankUserId
 
-    const queryCreateAccount = `INSERT INTO account (BankUserId, AccountNo, IsStudent, CreatedAt, ModefiedAt, InterestRate, Amount) VALUES(?, ?, ?, ?, ?, ?, ?)`
-    db.run(queryCreateAccount,[BankUserId, AccountNo, IsStudent, createdAt, modifiedAt, InterestRate, Amount],(err) => {
+    const queryCreateAccount = `INSERT INTO account (BankUserId, AccountNo, IsStudent, CreatedAt, ModefiedAt, InterestRate, Amount) select ?,?,?,?,?,?,? where not exists(SELECT UserId from bank_user WHERE UserId = ?)`
+    db.run(queryCreateAccount,[BankUserId, AccountNo, IsStudent, createdAt, modefiedAt, InterestRate, Amount, checkId],(err) => {
+        console.log(checkId)
         if (err) {
             console.log(BankUserId)
             res.send('it failed horribly').status(500)
@@ -46,7 +48,67 @@ export const postAccount = async (req,res) => {
     })
 
 }
+
+export const deleteAccount = async (req,res) => {
+    const {id} = req.params
+    const queryDeleteAccount = 'DELETE FROM account WHERE Id = ?';
+    db.run(queryDeleteAccount, [id], async function(err) {
+        if (err) {
+            return res.status(500).send({ errors: ["SQL-Error: ${err}"] });
+        } else if (this.changes >= 1) {
+            return res.status(200).send({ msg: `Row(s) affected: ${this.changes}`});
+        } else {
+            return res.status(400).send({BadRequest: `Borger not found, rows affected: ${this.changes}`});
+        }
+    });
+}
+
+export const getOneAccount = async (req,res) => {
+    const {id} = req.params
+    const queryGetOneAccount = `SELECT * FROM account WHERE Id = ${id}`
+    db.all(queryGetOneAccount,function (err,results) {
+        if(err){
+            console.log(err)
+            res.send('no account was found').status(504)
+        }
+        else{
+            res.json(results).status(200)
+        }
+    });
     
+}
+
+export const getAllAccounts = async (req,res) =>{
+    const queryGetAll = 'select * from account'
+    db.all(queryGetAll,(err,result) =>{
+        if(err){
+            console.log(err)
+            res.send('no accounts were found')
+        }
+        else{
+            res.json(result)
+        }
+    })
+}
+
+export const updateAccount = async (req,res) => {
+    const {id} = req.params
+    const IsStudent = req.body.IsStudent
+    let ModefiedAt = new Date();
+    ModefiedAt = dateBeautifier(ModefiedAt)
+    const Amount = req.body.Amount
+
+    const queryUpdateAccount = `Update account set IsStudent = ?, ModefiedAt = ?, Amount = ? where id = ?`
+    db.run(queryUpdateAccount,[IsStudent,ModefiedAt,Amount,id],(err,result) => {
+        if(err){
+            console.log(err)
+            res.send('No account was found').status(503)
+        }
+        else{
+            res.json(result)
+        }
+    })
+}
 
 export const postBankUser = async (req,res) => {
     const UserId = req.body.UserId
@@ -71,7 +133,6 @@ export const postBankUser = async (req,res) => {
          }
     })
 }
-
 
 export const addDeposit = async (req,res) => {
     const BankUserId = req.body.BankUserId
@@ -157,7 +218,7 @@ export const payLoan = async (req,res) => {
             console.log('current Amount ',currentAmount)
             console.log('amount paid ', amountPaid)
             const newAmount = currentAmount-amountPaid
-            const patchQuery = `Update loan SET Amount = ${newAmount}`
+            const patchQuery = `Update loan SET Amount = ${newAmount} where UserId =${id}`
             const queryCheckValue = `Select Id,UserId,Amount from loan where UserId =${id}`
             db.run(patchQuery,function (err,result) {
                 if(err){
@@ -180,17 +241,81 @@ export const payLoan = async (req,res) => {
 
 }
 
-export const testBankApi = async (req,res) => {
-    // let createdAt = new Date();
-    // createdAt = dateBeautifier(createdAt);
-    // let modifiedAt = new Date();
-    // modifiedAt = dateBeautifier(modifiedAt)
-    // let UserId = 4
-    // console.log('youve been hit BAM! ')
-    // res.send('hello world')
-    // const queryTest = `INSERT INTO bank_user (UserId ,CreatedAt, ModifiedAt) Values(?,?,?)`
-    // db.run(queryTest,[UserId,createdAt,modifiedAt],async (err) => {
-    //     console.log(err)
-    // })
+export const listLoans = async (req,res) => {
+    const {id} = req.params
+    const queryGetAllLones = `Select UserId,Amount from loan where UserId = ${id} AND amount >0`
+    db.all(queryGetAllLones,function (err,result) {
+        console.log(result)
+        if(err) {
+            console.log(err)
+            res.send('No loans could be found').status(500)
+        }
+        else{
+            res.json(result)
+        }
+    })
 }
 
+export const testBankApi = async (req,res) => {
+    // let bank_user_query = `CREATE TABLE IF NOT EXISTS bank_user (
+    //     Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    //        UserId INTEGER NOT NULL,
+    //     CreatedAt DATETIME NOT NULL,
+    //     ModifiedAt DATETIME NOT NULL
+    // )`;
+    
+    // db.run(bank_user_query, (err) => {
+    //     if (err) {
+    //         console.log(err);
+    //     }
+    // });
+    
+    // let deposit_query = `CREATE TABLE IF NOT EXISTS deposit (
+    //     Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    //     BankUserId INTEGER NOT NULL,
+    //     CreatedAt DATETIME NOT NULL,
+    //     Amount DECIMAL(2) NOT NULL,
+    //     FOREIGN KEY (BankUserId) REFERENCES bank_user(Id) ON DELETE CASCADE
+    // )`;
+        
+    // db.run(deposit_query, (err) => {
+    //     if (err) {
+    //         console.log(err);
+    //     }
+    // });
+    
+    // let loan_query = `CREATE TABLE IF NOT EXISTS loan (
+    //     Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    //     BankUserId INTEGER NOT NULL,
+    //     CreatedAt DATETIME NOT NULL,
+    //     ModefiedAt DATETIME NOT NULL,
+    //     Amount DECIMAL(2) NOT NULL,
+    //     FOREIGN KEY (BankUserId) REFERENCES bank_user(Id) ON DELETE CASCADE
+    // )`;
+        
+    // db.run(loan_query, (err) => {
+    //     if (err) {
+    //         console.log(err);
+    //     }
+    // });
+    
+    // let account_query = `CREATE TABLE IF NOT EXISTS account (
+    //     Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    //     BankUserId INTEGER NOT NULL,
+    //     AccountNo INTEGER NOT NULL,
+    //     IsStudent BIT NOT NULL,
+    //     CreatedAt DATETIME NOT NULL,
+    //     ModefiedAt DATETIME,
+    //     InterestRate DECIMAL(2) NOT NULL,
+    //     Amount DECIMAL(2) NOT NULL,
+    //     FOREIGN KEY (BankUserId) REFERENCES bank_user(Id) ON DELETE CASCADE
+    // )`;
+        
+    // db.run(account_query, (err) => {
+    //     if (err) {
+    //         console.log(err);
+    //     }
+    // });
+    
+    // db.close();
+}
