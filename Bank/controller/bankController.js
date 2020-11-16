@@ -5,6 +5,7 @@ import  sqlite3 from 'sqlite3';
 let db_file = 'bank_db.sqlite'; 
 
 const interesteRateURL ='https://interesteratesforassignment.azurewebsites.net/api/InterRate'
+const loanAlgoURL = 'https://loanalgoforsi.azurewebsites.net/api/LoanAlgo'
 
 function dateBeautifier(date){
     let dateFormatted = [date.getFullYear(), date.getMonth()+1, date.getDate()].join('-')+' '+
@@ -106,6 +107,43 @@ export const getOneDeposit = async (req,res) => {
         }
     })
 
+}
+
+export const createLoan = async (req,res) => {
+    const BankUserId = req.body.BankUserId
+    const loanAmount = req.body.loanAmount
+    let createdAt = new Date();
+    createdAt = dateBeautifier(createdAt);
+    let modifiedAt = new Date();
+    modifiedAt = dateBeautifier(modifiedAt)
+    
+    const queryLoan = `Select Amount,BankUserId from account where BankUserId=${BankUserId}`
+    db.all(queryLoan, function (err,resaults) {
+        const userAmount = resaults[0].Amount
+        console.log(userAmount)
+            Axios.post(`${loanAlgoURL}`,{loanAmount:loanAmount,Amount:userAmount}).then((data) => {
+             if (data.status === 200){
+                 const insertLoanQuery ='INSERT INTO loan (UserId, CreatedAt, ModefiedAt, Amount) values (?,?,?,?)'
+                 db.run(insertLoanQuery,[BankUserId,createdAt,modifiedAt,loanAmount], async function (err) {
+                     if (err){
+                         console.log(loanAmount)
+                         console.log(err)
+                         res.status(403).send('there was an error')
+                     }
+                     else{
+                         res.send('the loan was succesfully made').status(200)
+                     }
+                 })
+             }
+             }) .catch(function (error) {
+                console.log(error);
+                res.send('the loan could not be made').status(403)
+              })
+    })
+}
+
+export const payLoan = async (req,res) => {
+    
 }
 
 export const testBankApi = async (req,res) => {
