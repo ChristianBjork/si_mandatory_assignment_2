@@ -97,7 +97,7 @@ export const getOneDeposit = async (req,res) => {
     const {id} = req.params;
     const queryGetOneDeposit = `Select * from deposit where BankUserId = ${id}` 
     console.log(id) 
-    db.all(queryGetOneDeposit, function (err,result,fields) {
+    db.all(queryGetOneDeposit, function (err,result) {
         if (err){
             res.send('Id did not match any ID').status(504)
         }
@@ -143,7 +143,41 @@ export const createLoan = async (req,res) => {
 }
 
 export const payLoan = async (req,res) => {
-    
+    const {id} = req.params
+    const amountPaid = req.body.Paid
+    console.log('our id is ',id)
+    const queryFindLoanValues = `Select Id,UserId,Amount from loan where UserId =${id}`
+    db.all(queryFindLoanValues,function (err,result) {
+        if (err){
+            res.send('No match for the given Id').status(403)
+            console.log(err)
+        }
+        else{
+            const currentAmount = result[0].Amount
+            console.log('current Amount ',currentAmount)
+            console.log('amount paid ', amountPaid)
+            const newAmount = currentAmount-amountPaid
+            const patchQuery = `Update loan SET Amount = ${newAmount}`
+            const queryCheckValue = `Select Id,UserId,Amount from loan where UserId =${id}`
+            db.run(patchQuery,function (err,result) {
+                if(err){
+                    console.log(err)
+                }
+                else{
+                    db.all(queryCheckValue,function (err,NewResult) {
+                        if(err){
+                            console.log('inside check')
+                            console.log(err)
+                        }
+                        else{
+                            console.log(NewResult)
+                        }
+                    })
+                }
+            })
+        }
+    })
+
 }
 
 export const testBankApi = async (req,res) => {
