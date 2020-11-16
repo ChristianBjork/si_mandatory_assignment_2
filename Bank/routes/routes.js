@@ -1,6 +1,6 @@
 import express from 'express'
 
-import {postAccount,getAllAccounts,updateAccount, getOneAccount, deleteAccount, testBankApi, postBankUser , addDeposit,getOneDeposit,createLoan,payLoan,listLoans} from '../controller/bankController.js'
+import {postAccount,getAllAccounts,updateAccount, getOneAccount, deleteAccount, testBankApi, postBankUser, deleteBankUser , addDeposit,getOneDeposit,createLoan,payLoan,listLoans,withdrawlMoney} from '../controller/bankController.js'
 
 
 const router = express.Router();
@@ -14,12 +14,15 @@ router.patch('/account/update/:id',updateAccount)
 
 
 router.post('/bankUser',postBankUser)
+router.delete('/bankUser/delete/:id',deleteBankUser)
+
 router.post('/addDeposit',addDeposit)
 router.post('/createLoan',createLoan)
 router.patch('/payLoan/:id',payLoan)
 router.get('/test',testBankApi)
 router.get('/getDepoist/:id',getOneDeposit)
 router.get('/getListLoans/:id',listLoans)
+router.patch('/withdrawlFromAccount/:id',withdrawlMoney)
 
 
 export default router;

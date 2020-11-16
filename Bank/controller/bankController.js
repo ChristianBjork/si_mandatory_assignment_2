@@ -110,6 +110,7 @@ export const updateAccount = async (req,res) => {
     })
 }
 
+
 export const postBankUser = async (req,res) => {
     const UserId = req.body.UserId
     let createdAt = new Date();
@@ -131,6 +132,20 @@ export const postBankUser = async (req,res) => {
          else{
                  res.send('Bank user could not be created, due to already having an account ').status(400)
          }
+    })
+}
+
+export const deleteBankUser = (req,res) => {
+    const {id} = req.params
+    const queryDeleteBankUser = `Delete from bank_user where id = ${id}`
+    db.run(queryDeleteBankUser,(err,resaults) => {
+        if (err){
+            console.log(err)
+            res.send('bank user could not be found').status(504)
+        }
+        else{
+            res.status(200).send('user was deleted')
+        }
     })
 }
 
@@ -254,6 +269,37 @@ export const listLoans = async (req,res) => {
             res.json(result)
         }
     })
+}
+
+export const withdrawlMoney = async (req,res) => {
+    const {id} = req.params
+    const amountToWithdraw = req.body.amountToWithdraw
+    let ModefiedAt = new Date();
+    ModefiedAt = dateBeautifier(ModefiedAt)
+    const queryWithdraw = `select BankUserId,Amount from account where Id = ?`
+    db.all(queryWithdraw,[id],(err,result) =>{
+        console.log(result[0].Amount)
+        if(result[0].Amount >= amountToWithdraw ){  
+            const newAmount = result[0].Amount - amountToWithdraw
+            console.log(newAmount)
+            const querySubtractAmount = 'UPDATE account SET Amount = ?, ModefiedAt = ? WHERE Id = ? '
+            db.run(querySubtractAmount,[newAmount,ModefiedAt,id],(err) =>{
+                if(err){
+                    console.log(err)
+                    res.send('error').status(500)
+                }
+                else{
+                    res.send('money sucessfully withdrawn').status(200)
+                }
+            })
+        }
+        else{
+            res.send('can not withdraw more than you have on your account').status(500)
+
+        }
+
+    })
+
 }
 
 export const testBankApi = async (req,res) => {
