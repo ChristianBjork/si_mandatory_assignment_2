@@ -19,9 +19,8 @@ module.exports = async function (context, req) {
         responseMessage = `the amount of tax paid is ${amountPaid}`
         context.res= {
             status: 200,
-            body: {"Message":responseMessage, "amountPaid": amountPaid}
+            body: {"Message":responseMessage, "amountToBePaid": amountPaid}
 
             }
-
     }
 }
