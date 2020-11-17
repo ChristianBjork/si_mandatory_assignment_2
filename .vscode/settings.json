@@ -7,5 +7,4 @@
     "debug.internalConsoleOptions": "neverOpen",
     "azureFunctions.postDeployTask": "npm install",
     "azureFunctions.preDeployTask": "npm prune",
-    "python.pythonPath": "C:\\Users\\chri279v\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe"
 }
