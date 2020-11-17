@@ -15,7 +15,7 @@ let address_query = `CREATE TABLE IF NOT EXISTS address (
    	BorgerUserId INTEGER NOT NULL,
     Address TEXT NOT NULL,
 	CreatedAt DATETIME NOT NULL,
-	IsValid BIT NOT NULL DEFAULT 1,
+	IsValid BIT DEFAULT 1,
 	FOREIGN KEY (BorgerUserId) REFERENCES borger_user(Id) ON DELETE CASCADE
 )`;
 
@@ -24,5 +24,3 @@ db.run(address_query, (err) => {
         console.log(err);
     }
 });
-
-db.close();

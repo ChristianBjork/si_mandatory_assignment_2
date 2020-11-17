@@ -1,4 +1,3 @@
-
 import sqlite3 from 'sqlite3';
 
 //Setup db connection
@@ -28,7 +27,7 @@ console.log(createdAt);
     const create_query = 'INSERT INTO borger_user (UserId, CreatedAt) VALUES (?, ?)';
     db.run(create_query, [userId, createdAt], async (err) => {
         if(err) {
-            return res.status(500).send({ errors: ['SQL-Error:' + err] });
+            return res.status(500).send({ errors: [`SQL-Error: ${err}`] });
         } else {
             console.log("Inserted user: " + userId);
             return res.status(200).send({userID: userId});
@@ -44,7 +43,7 @@ console.log(id);
     const read_query = 'SELECT * FROM borger_user WHERE Id=?';
     db.get(read_query, [id], async (err, rows) => {
         if(err) {
-            return res.status(500).send({ errors: ['SQL-Error:' + err] });
+            return res.status(500).send({ errors: [`SQL-Error: ${err}`] });
         } else if (rows !== undefined){
             return res.status(200).send({borgerId: rows.Id, userId: rows.UserId, createdAt: rows.CreatedAt});
         } else {
@@ -58,13 +57,11 @@ export const updateBorger = async (req, res) => {
     const id = req.params.id;
 
     const newUserId = req.body.userId;
-    const newCreatedAt = new Date();
-    newCreatedAt = dateBeautifier(newCreatedAt);
 
     const update_query = 'UPDATE borger_user SET UserId = ?, CreatedAt = ? WHERE Id = ?';
     db.run(update_query, [newUserId, newCreatedAt, id], async function(err) {
         if(err) {
-            return res.status(500).send({ errors: ["SQL-Error: ${err}"] });
+            return res.status(500).send({ errors: [`SQL-Error: ${err}`] });
         } else if (this.changes >= 1) {
             return res.status(200).send({ msg: `Row(s) updated: ${this.changes}`});
         } else {
@@ -80,7 +77,7 @@ export const deleteBorger = async (req, res) => {
     const delete_query = 'DELETE FROM borger_user WHERE Id = ?';
     db.run(delete_query, [id], async function(err) {
         if (err) {
-            return res.status(500).send({ errors: ["SQL-Error: ${err}"] });
+            return res.status(500).send({ errors: [`SQL-Error: ${err}`] });
         } else if (this.changes >= 1) {
             return res.status(200).send({ msg: `Row(s) affected: ${this.changes}`});
         } else {
@@ -95,13 +92,20 @@ export const createAddress = async (req, res) => {
     const borgerUserId = req.body.borgerUserId;
     let createdAt = new Date();
     createdAt = dateBeautifier(createdAt);
-    let isValid = req.body.isValid;
 console.log(createdAt);
 
-    const create_query = 'INSERT INTO address (BorgerUserId, Address, CreatedAt, IsValid) VALUES (?, ?, ?, ?)';
-    db.run(create_query, [borgerUserId, address, createdAt, isValid], async function(err) {
+    //Set old address to not valid
+    const update_isValid_query = 'UPDATE address SET IsValid = 0 WHERE IsValid = 1 AND BorgerUserId = ?';
+    db.run(update_isValid_query, [borgerUserId], async(err) => {
         if(err) {
-            return res.status(500).send({ errors: ['SQL-Error:' + err] });
+            return res.status(500).send({ errors: [`SQL-Error: ${err}`] });
+        }
+    });
+
+    const create_query = 'INSERT INTO address (BorgerUserId, Address, CreatedAt) VALUES (?, ?, ?)';
+    db.run(create_query, [borgerUserId, address, createdAt], async function(err) {
+        if(err) {
+            return res.status(500).send({ errors: [`SQL-Error: ${err}`] });
         } else if (this.changes >= 1) {
             console.log("Inserted address: " + address);
             return res.status(200).send({address: address});
@@ -111,6 +115,7 @@ console.log(createdAt);
     });
 }
 
+
 //Read Address
 export const readAddress = async (req, res) => {
     const id = req.body.id;
@@ -119,7 +124,7 @@ console.log(id);
     const read_query = 'SELECT * FROM address WHERE Id=?';
     db.get(read_query, [id], async (err, rows) => {
         if(err) {
-            return res.status(500).send({ errors: ['SQL-Error:' + err] });
+            return res.status(500).send({ errors: [`SQL-Error: ${err}`] });
         } else if (rows !== undefined){
             console.log(rows.IsValid);
             let isActive = (rows.IsValid == "1" ? true : false);
@@ -130,25 +135,33 @@ console.log(id);
     });
 }
 
-//Update Borger
-// export const updateAddress = async (req, res) => {
-//     const id = req.params.id;
+//Update Address
+export const updateAddress = async (req, res) => {
+    const Id = req.params.id;
 
-//     const something = req.body.something;
-//     const newCreatedAt = new Date();
-//     newCreatedAt = dateBeautifier(newCreatedAt);
+    const borgerUserId = req.body.borgerUserId;
+    const address = req.body.address;
+    const isValid = req.body.isValid;
 
-//     const update_query = 'UPDATE address SET column1 = ?, column2 = ? WHERE Id = ?';
-//     db.run(update_query, [something, newCreatedAt, id], async function(err) {
-//         if(err) {
-//             return res.status(500).send({ errors: ["SQL-Error: ${err}"] });
-//         } else if (this.changes >= 1) {
-//             return res.status(200).send({ msg: `Row(s) updated: ${this.changes}`});
-//         } else {
-//             return res.status(400).send({BadRequest: `Address not found, rows updated: ${this.changes}`});
-//         }
-//     });
-// }
+    //Set old address to not valid
+    const update_isValid_query = 'UPDATE address SET IsValid = 0 WHERE IsValid = 1 AND BorgerUserId = ?';
+    db.run(update_isValid_query, [borgerUserId], async(err) => {
+        if(err) {
+            return res.status(500).send({ errors: [`SQL-Error: ${err}`] });
+        }
+    });
+
+    const update_query = 'UPDATE address SET Address = ?, isValid = ? WHERE Id = ?';
+    db.run(update_query, [address, isValid, Id], async function(err) {
+        if(err) {
+            return res.status(500).send({ errors: [`SQL-Error: ${err}`] });
+        } else if (this.changes >= 1) {
+            return res.status(200).send({ msg: `Row(s) updated: ${this.changes}`});
+        } else {
+            return res.status(400).send({BadRequest: `Rows updated: ${this.changes}`});
+        }
+    });
+}
 
 //Delete Address
 export const deleteAddress = async (req, res) => {
@@ -160,7 +173,7 @@ export const deleteAddress = async (req, res) => {
         } else if (this.changes >= 1) {
             return res.status(200).send({ addressDeleted: `Row(s) affected: ${this.changes}`});
         } else {
-            return res.status(400).send({BadRequest: `Address not found, rows affected: ${this.changes}`});
+            return res.status(400).send({BadRequest: `Rows affected: ${this.changes}`});
         }
     });
 }
