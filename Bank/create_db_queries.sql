@@ -29,7 +29,7 @@ let loan_query = `CREATE TABLE IF NOT EXISTS loan (
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
     BankUserId INTEGER NOT NULL,
     CreatedAt DATETIME NOT NULL,
-    ModefiedAt DATETIME NOT NULL,
+    ModefiedAt DATETIME,
     Amount DECIMAL(2) NOT NULL,
     FOREIGN KEY (BankUserId) REFERENCES bank_user(Id) ON DELETE CASCADE
 )`;
@@ -58,7 +58,6 @@ db.run(account_query, (err) => {
     }
 });
 
-db.close();
 
 query = 'INSERT INTO account (BankUserId,AccountNo,IsStudent,CreatedAt,ModefiedAt,InterestRate,Amount) VALUES (3,3,true,2020-11-13,2020-11-13,2,5400)'
 "INSERT INTO deposit(BankUserId,CreatedAt,Amount) VALUES (3,'2020-11-13',2000)"

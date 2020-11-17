@@ -9,7 +9,8 @@ import {
     createAddress,
     readAddress,
     updateAddress,
-    deleteAddress 
+    deleteAddress,
+    payTaxes 
 } 
     from '../controller/borgerController.js';
 
@@ -24,4 +25,5 @@ router.post('/createAddress', createAddress);
 router.get('/readAddress', readAddress);
 router.patch('/updateAddress/:id', updateAddress);
 router.delete('/deleteAddress/:id', deleteAddress);
+router.post('/pay-taxes', payTaxes);
 export default router;

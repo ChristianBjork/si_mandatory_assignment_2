@@ -108,18 +108,102 @@
         "UpstreamPathTemplate": "/borger/deleteAddress/{id}",    
         "UpstreamHttpMethod": [ "DELETE" ]
       },
-      {
-        "DownstreamPathTemplate": "/todos",
-        "DownstreamScheme": "https",
-        "DownstreamHostAndPorts": [
-            {
-                "Host": "jsonplaceholder.typicode.com",
-                "Port": 443
-            }
-        ],
-        "UpstreamPathTemplate": "/todos",
+      {    
+        "DownstreamPathTemplate": "/api/skat/createUser",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",    
+           "Port": "5006"    
+          }     
+        ],    
+        "UpstreamPathTemplate": "/skat/createUser",    
+        "UpstreamHttpMethod": [ "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/skat/readUser",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",    
+           "Port": "5006"    
+          }     
+        ],    
+        "UpstreamPathTemplate": "/skat/readUser",    
         "UpstreamHttpMethod": [ "GET" ]
-        }
+      },
+      {    
+        "DownstreamPathTemplate": "/api/skat/updateUser/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",    
+           "Port": "5006"    
+          }     
+        ],    
+        "UpstreamPathTemplate": "/skat/updateUser/{id}",    
+        "UpstreamHttpMethod": [ "PATCH" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/skat/deleteUser/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",    
+           "Port": "5006"    
+          }     
+        ],    
+        "UpstreamPathTemplate": "/skat/deleteUser/{id}",    
+        "UpstreamHttpMethod": [ "DELETE" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/skat/createSkatYear_UserYear",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",    
+           "Port": "5006"    
+          }     
+        ],    
+        "UpstreamPathTemplate": "/skat/createSkatYear_UserYear",    
+        "UpstreamHttpMethod": [ "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/skat/readYear",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",    
+           "Port": "5006"    
+          }     
+        ],    
+        "UpstreamPathTemplate": "/skat/readYear",    
+        "UpstreamHttpMethod": [ "GET" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/skat/updateYear/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",    
+           "Port": "5006"    
+          }     
+        ],    
+        "UpstreamPathTemplate": "/skat/updateYear/{id}",    
+        "UpstreamHttpMethod": [ "PATCH" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/skat/deleteYear/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",    
+           "Port": "5006"    
+          }     
+        ],    
+        "UpstreamPathTemplate": "/skat/deleteYear/{id}",    
+        "UpstreamHttpMethod": [ "DELETE" ]
+      }
     ],
     "GlobalConfiguration": {
       "RequestIdKey": null,

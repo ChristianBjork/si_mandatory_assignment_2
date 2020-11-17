@@ -222,7 +222,7 @@ export const createLoan = async (req,res) => {
 export const payLoan = async (req,res) => {
     const {id} = req.params
     const amountPaid = req.body.Paid
-    console.log('our id is ',id)
+    console.log('our id is ', id)
     const queryFindLoanValues = `Select Id,UserId,Amount from loan where UserId =${id}`
     db.all(queryFindLoanValues,function (err,result) {
         if (err){
@@ -277,7 +277,7 @@ export const withdrawlMoney = async (req,res) => {
     const amountToWithdraw = req.body.amountToWithdraw
     let ModefiedAt = new Date();
     ModefiedAt = dateBeautifier(ModefiedAt)
-    const queryWithdraw = `select BankUserId,Amount from account where Id = ?`
+    const queryWithdraw = `select BankUserId, Amount from account where Id = ?`
     db.all(queryWithdraw,[id],(err,result) =>{
         console.log(result[0].Amount)
         if(result[0].Amount >= amountToWithdraw ){  
@@ -304,7 +304,7 @@ export const withdrawlMoney = async (req,res) => {
 }
 
 export const getAmountFromUser = async (req,res) => {
-    const id = req.body.UserId
+    const id = req.body.userId
     const getAmountQuery = 'SELECT Amount FROM account WHERE Id = ?'
     console.log(id)
     db.get(getAmountQuery,[id],(err, result) => {
@@ -314,9 +314,23 @@ export const getAmountFromUser = async (req,res) => {
         }
         else{
             console.log(result)
-            res.json(result)
+            res.status(200).send({amount: result.Amount});
         }
     })
+}
+
+export const updateAmount = async (req, res) => {
+    const userId = req.params.userId;
+    const newAmount = req.body.newAmount;
+    const update_query = 'UPDATE account SET Amount = ? WHERE UserId = ?';
+    db.run(update_query, [newAmount, userId], async (err) => {
+        if (err){
+            console.log('No amount was found on the given UserId')
+            res.send('No amount was found on the given UserId').status(404)
+        } else {
+            res.status(200).send({ msg: `Amount updated, and tax was paid!`});
+        }
+    });
 }
 export const testBankApi = async (req,res) => {
     // let bank_user_query = `CREATE TABLE IF NOT EXISTS bank_user (
