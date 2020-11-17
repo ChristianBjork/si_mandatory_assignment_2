@@ -6,6 +6,7 @@ let db_file = 'bank_db.sqlite';
 
 const interesteRateURL ='https://interesteratesforassignment.azurewebsites.net/api/InterRate'
 const loanAlgoURL = 'https://loanalgoforsi.azurewebsites.net/api/LoanAlgo'
+const taxCalculator ='skattaxcalculatorforsi.azurewebsites.net/api/Skat_Tax_calculator'
 
 function dateBeautifier(date){
     let dateFormatted = [date.getFullYear(), date.getMonth()+1, date.getDate()].join('-')+' '+
@@ -302,6 +303,21 @@ export const withdrawlMoney = async (req,res) => {
 
 }
 
+export const getAmountFromUser = async (req,res) => {
+    const id = req.body.UserId
+    const getAmountQuery = 'SELECT Amount FROM account WHERE Id = ?'
+    console.log(id)
+    db.get(getAmountQuery,[id],(err, result) => {
+        if (err){
+            console.log('No amount was found on the given UserId')
+            res.send('No amount was found on the given UserId').status(404)
+        }
+        else{
+            console.log(result)
+            res.json(result)
+        }
+    })
+}
 export const testBankApi = async (req,res) => {
     // let bank_user_query = `CREATE TABLE IF NOT EXISTS bank_user (
     //     Id INTEGER PRIMARY KEY AUTOINCREMENT,
