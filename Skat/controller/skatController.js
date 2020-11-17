@@ -119,8 +119,9 @@ console.log(createdAt);
                             if(err){
                                 return res.status(500).send({ errors: ["SQL-Error: ${err}"] });
                             }
-                        });     
-                        userId++; 
+                        });    
+                        affectedRows++; 
+                        amount += 2000; 
                     });
                     return res.status(200).send({msg: `SkatYear created: ${createdAt}`, skat_user_year: `Inserted rows: ${affectedRows}`});
                 }
@@ -189,30 +190,33 @@ export const deleteYear = async (req, res) => {
 export const payTaxes = async ( req, res ) => {
     const userId = req.body.userId;
 
-    axios.post('http://localhost:5005/account/getAmount', {userid: userId}).then(response => {
-console.log(response);
+    axios.post('http://localhost:5005/api/bankAPI/account/getAmount', {userId: userId}).then(response => {
         const paidTaxes_query = 'SELECT Amount FROM skat_user_year WHERE IsPaid = 0 AND UserId = ?';
         db.all(paidTaxes_query, [userId], async(err, rows) => {
             if (err) {
                 return res.status(500).send({ errors: [`SQL-Error: ${err}`] });
-            } else if ( rows == undefined) {
+            } else if ( rows !== undefined) {
                 console.log('User with id: ' + userId + ' has unpaid taxes!');
             } else {
                 console.log('User with id: ' + userId + ' has paid all his taxes!');
             }
         });
-        const amount = response.body.amount;
-        axios.post('http://localhost:7071/api/Skat_Tax_Calculator', {amount: amount}).then(result => {
-            const amountPaid = result.body.amountPaid;
-            const updateAmountIsPaid_query = 'UPDATE skat_user_year SET Amount = ?, SET IsPaid = 1 WHERE UserId = ?';
+        const amount = response.data.amount;
+        console.log('this is skat amount:' + amount);
+        axios.post('https://skattaxcalculatorforsi.azurewebsites.net/api/Skat_Tax_calculator', {money: amount}).then(result => {
+            const amountPaid = result.data.AmountToBePaid;
+            console.log('amount paid: ' + amountPaid);
+            console.log('what is in our data? ',result.data)
+            const updateAmountIsPaid_query = 'UPDATE skat_user_year SET Amount = ?, IsPaid = 1 WHERE UserId = ?';
             db.run(updateAmountIsPaid_query, [amountPaid, userId], async (err) => {
                 if (err) {
+                    console.log("SKAT HERE");
                     return res.status(500).send({ errors: [`SQL-Error: ${err}`] });
                 } 
             });
             let newAmount = amount - amountPaid;
-            axios.post(`http://localhost:5005/account/updateAmount/${userId}`, {newAmount: newAmount}).then(respo => {
-                return res.status(200).send({msg: respo.body.msg});
+            axios.patch(`http://localhost:5005/api/bankAPI/account/updateAmount/${userId}`, {newAmount: newAmount}).then(respo => {
+                return res.status(200).send({msg: 'amount paid: ' + respo.data.msg});
             }).catch(err => {
                 if (err) {
                     console.log(err);

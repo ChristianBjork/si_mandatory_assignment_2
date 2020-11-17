@@ -6,7 +6,7 @@ let db_file = 'bank_db.sqlite';
 
 const interesteRateURL ='https://interesteratesforassignment.azurewebsites.net/api/InterRate'
 const loanAlgoURL = 'https://loanalgoforsi.azurewebsites.net/api/LoanAlgo'
-const taxCalculator ='skattaxcalculatorforsi.azurewebsites.net/api/Skat_Tax_calculator'
+const taxCalculatorURL ='https://skattaxcalculatorforsi.azurewebsites.net/api/Skat_Tax_calculator'
 
 function dateBeautifier(date){
     let dateFormatted = [date.getFullYear(), date.getMonth()+1, date.getDate()].join('-')+' '+
@@ -305,29 +305,35 @@ export const withdrawlMoney = async (req,res) => {
 
 export const getAmountFromUser = async (req,res) => {
     const id = req.body.userId
-    const getAmountQuery = 'SELECT Amount FROM account WHERE Id = ?'
+    const getAmountQuery = 'SELECT Amount FROM account WHERE BankUserId = ?'
     console.log(id)
     db.get(getAmountQuery,[id],(err, result) => {
         if (err){
             console.log('No amount was found on the given UserId')
             res.send('No amount was found on the given UserId').status(404)
         }
-        else{
-            console.log(result)
+        else if(result !== undefined) {
+            console.log('amount: ' + result.Amount)
             res.status(200).send({amount: result.Amount});
+        } else {
+            res.status(403).send({notFound: 'amount not found'})
         }
     })
 }
 
 export const updateAmount = async (req, res) => {
-    const userId = req.params.userId;
+    const userId = req.params.id;
     const newAmount = req.body.newAmount;
-    const update_query = 'UPDATE account SET Amount = ? WHERE UserId = ?';
-    db.run(update_query, [newAmount, userId], async (err) => {
+    const update_query = 'UPDATE account SET Amount = ? WHERE BankUserId = ?';
+    console.log(newAmount);
+    console.log("ID: "+ userId);
+    db.run(update_query, [newAmount, userId], async function(err) {
         if (err){
             console.log('No amount was found on the given UserId')
             res.send('No amount was found on the given UserId').status(404)
         } else {
+            console.log('Amount updated, tax was paid!')
+            console.log('ændringer: ' + this.changes)
             res.status(200).send({ msg: `Amount updated, and tax was paid!`});
         }
     });

@@ -9,7 +9,8 @@ import {
     createSkatYear_UserYear,
     readYear,
     updateYear,
-    deleteYear
+    deleteYear,
+    payTaxes 
 } 
     from '../controller/skatController.js';
 
@@ -24,5 +25,6 @@ router.post('/createSkatYear_UserYear', createSkatYear_UserYear)
 router.get('/readYear', readYear);
 router.patch('/updateYear/:id', updateYear);
 router.delete('/deleteYear/:id', deleteYear);
+router.post('/pay-taxes', payTaxes);
 
 export default router;

@@ -203,6 +203,18 @@
         ],    
         "UpstreamPathTemplate": "/skat/deleteYear/{id}",    
         "UpstreamHttpMethod": [ "DELETE" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/skat/pay-taxes",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",    
+           "Port": "5006"    
+          }     
+        ],    
+        "UpstreamPathTemplate": "/skat/pay-taxes",    
+        "UpstreamHttpMethod": [ "POST" ]
       }
     ],
     "GlobalConfiguration": {
