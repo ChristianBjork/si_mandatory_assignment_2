@@ -306,7 +306,6 @@ export const withdrawlMoney = async (req,res) => {
 export const getAmountFromUser = async (req,res) => {
     const id = req.body.userId
     const getAmountQuery = 'SELECT Amount FROM account WHERE BankUserId = ?'
-    console.log(id)
     db.get(getAmountQuery,[id],(err, result) => {
         if (err){
             console.log('No amount was found on the given UserId')
@@ -325,7 +324,7 @@ export const updateAmount = async (req, res) => {
     const userId = req.params.id;
     const newAmount = req.body.newAmount;
     const update_query = 'UPDATE account SET Amount = ? WHERE BankUserId = ?';
-    console.log(newAmount);
+    console.log("new amount: " + newAmount);
     console.log("ID: "+ userId);
     db.run(update_query, [newAmount, userId], async function(err) {
         if (err){
@@ -334,7 +333,7 @@ export const updateAmount = async (req, res) => {
         } else {
             console.log('Amount updated, tax was paid!')
             console.log('ændringer: ' + this.changes)
-            res.status(200).send({ msg: `Amount updated, and tax was paid!`});
+            res.status(200).send({ msg: 'Amount updated, and tax was paid!'});
         }
     });
 }

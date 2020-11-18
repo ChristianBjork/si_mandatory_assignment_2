@@ -189,7 +189,9 @@ export const deleteYear = async (req, res) => {
 //Pay Taxes
 export const payTaxes = async ( req, res ) => {
     const userId = req.body.userId;
+    console.log("USERID: " + userId);
 
+    //Get amount from bank account
     axios.post('http://localhost:5005/api/bankAPI/account/getAmount', {userId: userId}).then(response => {
         const paidTaxes_query = 'SELECT Amount FROM skat_user_year WHERE IsPaid = 0 AND UserId = ?';
         db.all(paidTaxes_query, [userId], async(err, rows) => {
@@ -201,12 +203,15 @@ export const payTaxes = async ( req, res ) => {
                 console.log('User with id: ' + userId + ' has paid all his taxes!');
             }
         });
+
         const amount = response.data.amount;
         console.log('this is skat amount:' + amount);
+        
+        //Get the tax calculated amount
+        //http://localhost:5001/skat/skat_tax_calculator
         axios.post('https://skattaxcalculatorforsi.azurewebsites.net/api/Skat_Tax_calculator', {money: amount}).then(result => {
             const amountPaid = result.data.AmountToBePaid;
             console.log('amount paid: ' + amountPaid);
-            console.log('what is in our data? ',result.data)
             const updateAmountIsPaid_query = 'UPDATE skat_user_year SET Amount = ?, IsPaid = 1 WHERE UserId = ?';
             db.run(updateAmountIsPaid_query, [amountPaid, userId], async (err) => {
                 if (err) {
@@ -215,8 +220,10 @@ export const payTaxes = async ( req, res ) => {
                 } 
             });
             let newAmount = amount - amountPaid;
+
+            //Update the new amount in account table
             axios.patch(`http://localhost:5005/api/bankAPI/account/updateAmount/${userId}`, {newAmount: newAmount}).then(respo => {
-                return res.status(200).send({msg: 'amount paid: ' + respo.data.msg});
+                return res.status(200).send({msg: respo.data.msg});
             }).catch(err => {
                 if (err) {
                     console.log(err);

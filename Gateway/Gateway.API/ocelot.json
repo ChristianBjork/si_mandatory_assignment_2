@@ -215,7 +215,251 @@
         ],    
         "UpstreamPathTemplate": "/skat/pay-taxes",    
         "UpstreamHttpMethod": [ "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/Skat_Tax_calculator",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "7071"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/skat/skat_tax_calculator",    
+        "UpstreamHttpMethod": [ "GET", "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/LoanAlgo",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "7071"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/loanAlgo",    
+        "UpstreamHttpMethod": [ "GET", "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/InterRate",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "7071"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/interRate",    
+        "UpstreamHttpMethod": [ "GET", "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/account/getOne/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/account/GetOne",    
+        "UpstreamHttpMethod": [ "GET", "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/account/delete/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/account/delete/{id}",    
+        "UpstreamHttpMethod": [ "GET", "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/account/post",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/account/create",    
+        "UpstreamHttpMethod": [ "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/bankUser",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/bankUser",    
+        "UpstreamHttpMethod": [ "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/bankUser/delete/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/delete/{id}",    
+        "UpstreamHttpMethod": [ "DELETE" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/account/getAll",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/account/getAll",    
+        "UpstreamHttpMethod": [ "GET", "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/account/update/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/account/update/{id}",    
+        "UpstreamHttpMethod": [ "GET", "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/addDeposit",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/addDeposit",    
+        "UpstreamHttpMethod": [ "GET", "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/payLoan/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/payLoan",    
+        "UpstreamHttpMethod": [ "PATCH" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/createLoan",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/createLoan",    
+        "UpstreamHttpMethod": [ "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/getDeposit/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/getDeposit",    
+        "UpstreamHttpMethod": [ "GET"]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/getDepoist/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/addDeposit",    
+        "UpstreamHttpMethod": [ "GET", "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/withdrawlFromAccount/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/addDeposit/withdrawlFromAccount/{id}",    
+        "UpstreamHttpMethod": [ "PATCH" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/getListLoans/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/addDeposit",    
+        "UpstreamHttpMethod": [ "GET", "POST" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/getListLoans/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/listOfLoans",    
+        "UpstreamHttpMethod": [ "GET", "POST" ]
+      }, 
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/account/account/getAmount",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/account/getAmount",    
+        "UpstreamHttpMethod": [ "GET" ]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bankAPI/account/updateAmount/{id}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",
+            "Port": "5005"
+          }     
+        ],    
+        "UpstreamPathTemplate": "/bank/updateAmount/{id}",    
+        "UpstreamHttpMethod": [ "PATCH" ]
       }
+      
+    
+
+
     ],
     "GlobalConfiguration": {
       "RequestIdKey": null,
