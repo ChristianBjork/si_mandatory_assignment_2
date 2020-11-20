@@ -13,6 +13,7 @@ function dateBeautifier(date){
                     [date.getHours(),date.getMinutes(), date.getSeconds()].join(':');
     return dateFormatted;
 }
+
 let db = new sqlite3.Database(db_file, (err) => {
     if(err){
         console.log('Failed Connection: ' + err.message);

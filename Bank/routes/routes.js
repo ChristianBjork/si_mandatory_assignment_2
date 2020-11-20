@@ -11,8 +11,6 @@ router.get('/account/getOne/:id',getOneAccount)
 router.get('/account/getAll',getAllAccounts)
 router.patch('/account/update/:id',updateAccount)
 
-
-
 router.post('/bankUser',postBankUser)
 router.delete('/bankUser/delete/:id',deleteBankUser)
 
