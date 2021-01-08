@@ -39,7 +39,7 @@ console.log(createdAt);
 
 //Read User
 export const readUser = async (req, res) => {
-    const id = req.body.id;
+    const id = req.params.id;
 console.log(id);
 
     const read_query = 'SELECT * FROM skat_user WHERE Id=?';
@@ -132,7 +132,7 @@ console.log(createdAt);
 
 //Read Year
 export const readYear = async (req, res) => {
-    const id = req.body.id;
+    const id = req.params.id;
 console.log(id);
 
     const read_query = 'SELECT * FROM skat_Year WHERE Id=?';

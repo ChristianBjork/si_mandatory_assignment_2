@@ -37,7 +37,7 @@ console.log(createdAt);
 
 //Read Borger
 export const readBorger = async (req, res) => {
-    const id = req.body.id;
+    const id = req.params.id;
 console.log(id);
 
     const read_query = 'SELECT * FROM borger_user WHERE Id=?';
@@ -118,7 +118,7 @@ console.log(createdAt);
 
 //Read Address
 export const readAddress = async (req, res) => {
-    const id = req.body.id;
+    const id = req.params.id;
 console.log(id);
 
     const read_query = 'SELECT * FROM address WHERE Id=?';

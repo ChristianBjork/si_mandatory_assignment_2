@@ -18,11 +18,11 @@ const router = express.Router();
 
 router.get('/test', test);
 router.post('/createUser', createUser);
-router.get('/readUser', readUser);
+router.get('/readUser/:id', readUser);
 router.patch('/updateUser/:id', updateUser);
 router.delete('/deleteUser/:id', deleteUser);
 router.post('/createSkatYear_UserYear', createSkatYear_UserYear)
-router.get('/readYear', readYear);
+router.get('/readYear/:id', readYear);
 router.patch('/updateYear/:id', updateYear);
 router.delete('/deleteYear/:id', deleteYear);
 router.post('/pay-taxes', payTaxes);

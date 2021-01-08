@@ -25,7 +25,7 @@
         "UpstreamHttpMethod": [ "POST" ]
       },
       {    
-        "DownstreamPathTemplate": "/api/borger/readBorger",    
+        "DownstreamPathTemplate": "/api/borger/readBorge/{id}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
@@ -33,7 +33,7 @@
            "Port": "5004"    
           }     
         ],    
-        "UpstreamPathTemplate": "/borger/readBorger",    
+        "UpstreamPathTemplate": "/borger/readBorger/{id}",    
         "UpstreamHttpMethod": [ "GET"]
       },
       {    
@@ -73,7 +73,7 @@
         "UpstreamHttpMethod": [ "POST" ]
       },
       {    
-        "DownstreamPathTemplate": "/api/borger/readAddress",    
+        "DownstreamPathTemplate": "/api/borger/readAddress/{id}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
@@ -81,7 +81,7 @@
            "Port": "5004"    
           }     
         ],    
-        "UpstreamPathTemplate": "/borger/readAddress",    
+        "UpstreamPathTemplate": "/borger/readAddress/{id}",    
         "UpstreamHttpMethod": [ "GET" ]
       },
       {    
@@ -121,7 +121,7 @@
         "UpstreamHttpMethod": [ "POST" ]
       },
       {    
-        "DownstreamPathTemplate": "/api/skat/readUser",    
+        "DownstreamPathTemplate": "/api/skat/readUser/{id}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
@@ -129,7 +129,7 @@
            "Port": "5006"    
           }     
         ],    
-        "UpstreamPathTemplate": "/skat/readUser",    
+        "UpstreamPathTemplate": "/skat/readUser/{id}",    
         "UpstreamHttpMethod": [ "GET" ]
       },
       {    
@@ -169,7 +169,7 @@
         "UpstreamHttpMethod": [ "POST" ]
       },
       {    
-        "DownstreamPathTemplate": "/api/skat/readYear",    
+        "DownstreamPathTemplate": "/api/skat/readYear/{id}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
@@ -177,7 +177,7 @@
            "Port": "5006"    
           }     
         ],    
-        "UpstreamPathTemplate": "/skat/readYear",    
+        "UpstreamPathTemplate": "/skat/readYear/{id}",    
         "UpstreamHttpMethod": [ "GET" ]
       },
       {    
